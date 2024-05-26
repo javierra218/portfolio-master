@@ -1,0 +1,80 @@
+---
+import Icon from "astro-icon";
+import { Image } from "astro:assets";
+import GitHubLogo from "../../assets/img/github.png"; // Imagen genérica para representar proyectos de GitHub
+
+const info = {
+  title: "Proyectos de GitHub",
+  seeAll: {
+    text: "Ver todos en",
+    url: "https://github.com/javierra218",
+    icon: "mdi:github",
+  },
+  projects: [
+    {
+      picture: GitHubLogo,
+      name: "Proyecto 1",
+      description: "Descripción breve del Proyecto 1. Descripción adicional para mostrar más detalles y comprobar el comportamiento del texto largo. Esta es una descripción muy larga para verificar cómo se maneja el texto que se sale del contenedor.",
+      url: "https://github.com/javierra218/proyecto1",
+    },
+    {
+      picture: GitHubLogo,
+      name: "Proyecto 2",
+      description: "Descripción breve del Proyecto 2.",
+      url: "https://github.com/javierra218/proyecto2",
+    },
+    {
+      picture: GitHubLogo,
+      name: "Proyecto 3",
+      description: "Descripción breve del Proyecto 3.",
+      url: "https://github.com/javierra218/proyecto3",
+    },
+  ],
+};
+---
+
+<div class="w-full max-w-6xl bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-8">
+  <div class="flex flex-col items-center py-10">
+    <span class="text-slate-900 dark:text-white font-bold text-2xl mb-6">{info.title}</span>
+    <hr class="w-full mb-6 border-gray-300 dark:border-gray-600" />
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        info.projects.map((project) => {
+          return (
+            <div class="relative flex flex-col items-center bg-white dark:bg-gray-800 rounded-md p-6 shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg group overflow-hidden">
+              <Image
+                src={project.picture}
+                alt={project.name}
+                class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover mb-4"
+              />
+              <span class="text-gray-800 dark:text-white text-lg md:text-xl font-medium title-font mb-2">
+                {project.name}
+              </span>
+              <p class="text-gray-400 dark:text-gray-400 text-xs md:text-sm text-center mb-4 transition-all duration-300 max-h-16 overflow-hidden group-hover:max-h-96 group-hover:text-gray-700 dark:group-hover:text-gray-200">
+                {project.description}
+              </p>
+              <a
+                href={project.url}
+                target="_blank"
+                class="text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-500 dark:hover:bg-blue-400 px-4 py-2 rounded-md inline-flex items-center transition-transform transform hover:-translate-y-1"
+              >
+                Ver Proyecto
+                <Icon name="mdi:github" class="w-6 h-6 ml-2" />
+              </a>
+            </div>
+          );
+        })
+      }
+    </div>
+    <div class="mt-8">
+      <a
+        href={info.seeAll.url}
+        target="_blank"
+        class="text-white bg-blue-900 hover:bg-blue-800 px-4 py-2 rounded-md inline-flex items-center transition-transform transform hover:-translate-y-1"
+      >
+        {info.seeAll.text}
+        <Icon name={info.seeAll.icon} class="w-6 h-6 ml-2" />
+      </a>
+    </div>
+  </div>
+</div>
