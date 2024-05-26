@@ -17,7 +17,7 @@ const info = {
     {
       path: "/certifications",
       name: "Certifications",
-    }
+    },
   ],
 };
 ---
@@ -27,9 +27,37 @@ const info = {
     const menu = document.getElementById("navbar-default");
     menu?.classList.toggle("hidden");
   }
+
+  function toggleTheme() {
+    const currentTheme = document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+    const newTheme = currentTheme === "light" ? "dark" : "light";
+    document.documentElement.classList.toggle("dark");
+    window.localStorage.setItem("theme", newTheme);
+  }
+
+  const theme = (() => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  })();
+
+  if (theme === "light") {
+    document.documentElement.classList.remove("dark");
+  } else {
+    document.documentElement.classList.add("dark");
+  }
+  window.localStorage.setItem("theme", theme);
 </script>
 
-<nav class="bg-gradient-to-r from-blue-800 to-blue-950 border-gray-200 dark:bg-gray-900 shadow-lg">
+<nav
+  class="bg-gradient-to-r from-blue-800 to-blue-950 border-gray-200 dark:bg-gray-900 shadow-lg"
+>
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
   >
@@ -41,8 +69,10 @@ const info = {
       />
       <span
         class="self-center text-2xl font-semibold whitespace-nowrap text-white"
-        >{info.title} <small class="text-xs text-gray-300">{info.subtitle}</small></span
       >
+        {info.title}
+        <small class="text-xs text-gray-300">{info.subtitle}</small>
+      </span>
     </a>
     <button
       data-collapse-toggle="navbar-default"
@@ -70,14 +100,14 @@ const info = {
     </button>
     <div class="hidden w-full md:block md:w-auto" id="navbar-default">
       <ul
-        class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-blue-950 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+        class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-blue-950 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700"
       >
         {
           info.paths.map((path) => (
             <li>
               <a
                 href={path.path}
-                class="block py-2 px-4 text-white rounded md:bg-transparent md:p-0 hover:text-blue-200 hover:bg-blue-900 transition duration-300"
+                class="block py-2 px-4 text-white rounded md:bg-transparent md:p-0 hover:text-blue-200 hover:bg-blue-900 dark:hover:text-gray-400 dark:hover:bg-gray-700 transition duration-300"
                 aria-current="page"
               >
                 {path.name}
@@ -87,5 +117,28 @@ const info = {
         }
       </ul>
     </div>
+    <button
+      type="button"
+      class="ml-4 p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      aria-label="Toggle theme"
+      onclick="toggleTheme()"
+    >
+      <span class="sr-only">Toggle theme</span>
+      <svg
+        class="w-5 h-5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 3v2m0 14v2m9-10h-2M5 12H3m16.36-7.36l-1.42 1.42M7.76 17.76l-1.42 1.42M17.66 16.24l1.42 1.42M7.76 6.24l1.42-1.42M12 7a5 5 0 100 10 5 5 0 000-10z"
+        ></path>
+      </svg>
+    </button>
   </div>
 </nav>
